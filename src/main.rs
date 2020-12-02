@@ -11,7 +11,6 @@ lazy_static! {
         name: "App",
         operations: vec![
             div::init(),
-            div::init(),
         ]
     };
 }

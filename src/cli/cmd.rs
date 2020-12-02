@@ -1,9 +1,5 @@
-use super::{
-    arg::*,
-    param::*,
-    module::*,
-    io::State
-};
+use super::*;
+use super::module::title;
 
 pub type Cmd = Command<fn(ArgList)>;
 
@@ -28,9 +24,9 @@ impl<F> Command<F> where F: Fn(ArgList) {
         Self::of(name, expression, operation, vec![int("a"), int("b")])
     }
 
-    fn not_empty(val: &ArgValue) -> bool {
+    fn not_empty(val: &InputValue) -> bool {
         match val {
-            ArgValue::Empty => false,
+            Empty => false,
             _ => true
         }
     }
@@ -43,7 +39,7 @@ impl CliModule for Cmd {
 
     fn execute(&self) -> State {
         title(&self.name());
-        println!("=> {}", self.expression());
+        println!("=> {}", self.expression);
         
         let values = ArgList::init(&self.params);
         if values.iter().all(Self::not_empty) {
@@ -51,7 +47,7 @@ impl CliModule for Cmd {
         } else {
             for val in values.iter() {
                 match val {
-                    ArgValue::Empty => {
+                    InputValue::Empty => {
                         println!("Missing parameter {:?}", val)
                     },
                     _ => continue
@@ -60,11 +56,6 @@ impl CliModule for Cmd {
         }
         State::Loop
     }
-
-    fn expression(&self) -> String {
-        self.expression.clone()
-    }
-
 }
 
 

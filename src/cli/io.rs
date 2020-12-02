@@ -4,56 +4,59 @@ use std::io::{
     Error,
     Write
 };
-use super::arg::*;
+use InputValue::*;
 
-pub enum State {
-    Loop, Exit, Back
+#[derive(Debug, Clone)]
+pub enum InputValue {
+    Int(i64), UInt(u32), Str(String), 
+    IntList(Vec<i64>), UIntList(Vec<u32>),
+    Empty, Quit, Back
 }
 
-pub fn input_i64(arg: &str) -> ArgValue {
+pub fn input_i64(arg: &str) -> InputValue {
     input(arg, parse_i64)
 }
 
-pub fn input_u32(arg: &str) -> ArgValue {
+pub fn input_u32(arg: &str) -> InputValue {
     input(arg, parse_u32)
 }
 
-pub fn input_str(arg: &str) -> ArgValue {
-    input(arg, |_, val| ArgValue::Str(val.to_string()))
+pub fn input_str(arg: &str) -> InputValue {
+    input(arg, |_, val| Str(val.to_string()))
 }
 
-pub fn input_vec_i64(arg: &str) -> ArgValue {
+pub fn input_vec_i64(arg: &str) -> InputValue {
     input(arg, |_, val| {
         let parse = |s: &str| s.parse::<i64>().unwrap();
         let list: Vec<i64> = val.split(" ").map(parse).collect();
-        ArgValue::IntList(list)
+        IntList(list)
     })
 }
 
-pub fn input_vec_u32(arg: &str) -> ArgValue {
+pub fn input_vec_u32(arg: &str) -> InputValue {
     input(arg, |_, val| {
         let parse = |s: &str| s.parse::<u32>().unwrap();
         let list: Vec<u32> = val.split(" ").map(parse).collect();
-        ArgValue::UIntList(list)
+        UIntList(list)
     })
 }
 
-fn input(arg: &str, parse: fn(&str, &str) -> ArgValue) -> ArgValue {
+fn input(arg: &str, parse: fn(&str, &str) -> InputValue) -> InputValue {
     request_input(arg);
     match nextln() {
-        Ok(ln) if ln == "q" => ArgValue::Quit,
-        Ok(ln) if ln == "b" => ArgValue::Back,
+        Ok(ln) if ln == "q" => Quit,
+        Ok(ln) if ln == "b" => Back,
         Ok(ln) => parse(arg, &ln),
         Err(e) => {
             error(e);
-            ArgValue::Empty
+            Empty
         }
     }
 }
 
-fn parse_i64(arg: &str, val: &str) -> ArgValue {
+fn parse_i64(arg: &str, val: &str) -> InputValue {
     match val.parse::<i64>() {
-        Ok(i) => ArgValue::Int(i),
+        Ok(i) => Int(i),
         _ => {
             invalid("int", val);
             try_again();
@@ -62,9 +65,9 @@ fn parse_i64(arg: &str, val: &str) -> ArgValue {
     }
 }
 
-fn parse_u32(arg: &str, val: &str) -> ArgValue {
+fn parse_u32(arg: &str, val: &str) -> InputValue {
     match val.parse::<u32>() {
-        Ok(u) => ArgValue::UInt(u),
+        Ok(u) => UInt(u),
         _ => {
             invalid("uint", &val);
             try_again();

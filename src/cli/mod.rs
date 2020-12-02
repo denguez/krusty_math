@@ -4,11 +4,15 @@ mod cmd;
 mod param;
 mod arg;
 
-pub use module::Module;
+pub use io::*;
+pub use io::InputValue::*;
+
+pub use module::{
+    Module, CliModule, State
+};
 pub use cmd::Cmd;
 pub use param::*;
 pub use arg::{
     ArgList,
-    ArgValue::*,
     ArgTuplet::*
 };

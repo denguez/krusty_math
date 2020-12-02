@@ -1,17 +1,14 @@
-use super::{
-    arg::ArgValue,
-    io,
-    io::{
-        State,
-        State::*,
-    },
-    cmd::Cmd
-};
+use super::*;
+
+use State::*;
+
+pub enum State {
+    Loop, Exit, Detach
+}
 
 pub trait CliModule {
     fn name(&self) -> &str;
     fn execute(&self) -> State;
-    fn expression(&self) -> String;
 }
 
 pub struct Module<T: CliModule> {
@@ -23,7 +20,9 @@ impl<T: CliModule> Module<T> {
     pub fn run(module: &Self) -> State {
         module.promt_options()
     }
+}
 
+impl<T: CliModule> Module<T> {
     fn print_menu(&self) {
         title(self.name);
         self.operations.iter().enumerate().for_each(|(i, op)|
@@ -36,16 +35,16 @@ impl<T: CliModule> Module<T> {
     fn promt_options(&self) -> State {
         self.print_menu();
         match io::input_u32("Enter option") {
-            ArgValue::UInt(u) => match self.run_operation(u as usize) {
+            UInt(u) => match self.run_operation(u as usize) {
                 Loop => self._continue(u as usize),
-                Back => self.promt_options(),
+                Detach => self.promt_options(),
                 _ => Exit
             },
-            ArgValue::Quit => {
+            Quit => {
                 println!("bye");
                 Exit
             },
-            ArgValue::Back => Back,
+            Back => Detach,
             _ => self.promt_options(),
         }
     }
@@ -88,10 +87,6 @@ impl CliModule for Module<Cmd> {
 
     fn execute(&self) -> State {
         Self::run(self)
-    }
-
-    fn expression(&self) -> String {
-        "".to_string()
     }
 }
 

@@ -1,34 +1,23 @@
 use std::slice::Iter;
-use super::{
-    io::*,
-    param::*
-};
+use super::*;
 
-use ArgValue::*;
 use ArgTuplet::*;
-
-#[derive(Debug, Clone)]
-pub enum ArgValue {
-    Int(i64), UInt(u32), Str(String), 
-    IntList(Vec<i64>), UIntList(Vec<u32>),
-    Empty, Quit, Back
-}
 
 #[derive(Debug, Clone)]
 pub enum ArgTuplet {
     Zero, 
-    One(ArgValue), 
-    Two(ArgValue, ArgValue), 
-    Three(ArgValue, ArgValue, ArgValue)
+    One(InputValue), 
+    Two(InputValue, InputValue), 
+    Three(InputValue, InputValue, InputValue)
 }
 
 pub struct ArgList { 
-    pub vec: Vec<ArgValue> 
+    pub vec: Vec<InputValue> 
 }
 
 impl ArgList {
     pub fn init(params: &[Param]) -> ArgList {
-        let mut values: Vec<ArgValue> = Vec::new();
+        let mut values: Vec<InputValue> = Vec::new();
         for p in params {
             match p._type {
                 ParamType::Int => values.push(input_i64(&p.name)),
@@ -61,7 +50,7 @@ impl ArgList {
         }
     }
 
-    pub fn iter(&self) -> Iter<'_, ArgValue> {
+    pub fn iter(&self) -> Iter<'_, InputValue> {
         self.vec.iter()
     }
 }
