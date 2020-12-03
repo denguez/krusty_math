@@ -9,7 +9,7 @@ use cli::*;
 
 lazy_static! {
     static ref APP: Module<Module<Cmd>> = Module {
-        name: "App",
+        name: "krusty math",
         operations: vec![
             set::init(),
             div::init(),

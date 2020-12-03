@@ -1,7 +1,4 @@
-use std::{
-    fmt,
-    convert::TryInto
-};
+use std::fmt;
 use super::factorial::combinatory;
 
 pub trait Element: Clone + fmt::Display + fmt::Debug {
@@ -18,16 +15,16 @@ impl<T> Set<T> where T: Element {
         Set { el: Vec::with_capacity(len) }
     }
 
-    pub fn elements(el: Vec<T>) -> Self {
+    pub fn of_elements(el: Vec<T>) -> Self {
         Set { el: el }
     }
 
     pub fn power(set: Self) -> Set<Self> {
-        let p_cardinal = (2 as usize).pow(set.len().try_into().unwrap());
+        let p_cardinal = (2 as usize).pow(set.cardinal() as u32);
         let mut power: Set<Set<T>> = Set::of_size(p_cardinal);
-        for i in 0..power.len() {
+        for i in 0..power.cardinal() {
             let mut row: Set<T> = Self::of_size(1);
-            for n in 0..set.len() {
+            for n in 0..set.cardinal() {
                 if (i >> n) % 2 == 1 {
                     row.add(set.el(n))
                 }
@@ -39,7 +36,7 @@ impl<T> Set<T> where T: Element {
 }
 
 impl<T> Set<T> where T: Element {
-    pub fn len(&self) -> usize {
+    pub fn cardinal(&self) -> usize {
         self.el.capacity()
     }
 
@@ -50,10 +47,10 @@ impl<T> Set<T> where T: Element {
     fn add(&mut self, el: T) {
         self.el.push(el)
     }
-}
 
-pub fn subsets_of_len(n: u32, r: u32) -> u32 {
-    combinatory(n, r)
+    pub fn subsets_of_size(&self, r: u32) -> u32 {
+        combinatory(self.cardinal() as u32, r)
+    }
 }
 
 impl<T> fmt::Display for Set<T> where T: Element {
