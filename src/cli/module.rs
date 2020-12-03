@@ -25,11 +25,13 @@ impl<T: CliModule> Module<T> {
 impl<T: CliModule> Module<T> {
     fn print_menu(&self) {
         title(self.name);
+        println!("(q)uit");
+        if self.name != "krusty math" {
+            println!("(b)ack");
+        }
         self.operations.iter().enumerate().for_each(|(i, op)|
             println!("{}. {}", i + 1, op.name())
         );
-        println!("(q)uit");
-        println!("(b)ack")
     }
 
     fn promt_options(&self) -> State {
