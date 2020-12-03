@@ -9,7 +9,7 @@ pub fn init() -> Module<Cmd> {
             Cmd::of("Number of subsets of r size", "C(n, r)", subsets_of_len,
                 vec![uint("n"), uint("r")]
             ),
-            Cmd::of("Cartesian product", "AxB", power_set, 
+            Cmd::of("Cartesian product", "AxB", cartesian_prod, 
                 vec![str_list("A"), str_list("B")]
             ),
         ]
@@ -31,6 +31,19 @@ fn subsets_of_len(args: ArgList) {
     match args.unwrap() {
         Two(UInt(n), UInt(r)) => {
             println!("=> C({}, {}) = {}", n, r, set::subsets_of_len(n, r))
+        },
+        _ => {}
+    }
+}
+
+fn cartesian_prod(args: ArgList) {
+    match args.unwrap() {
+        Two(StrList(a), StrList(b)) => {
+            let set_a = Set::elements(a);
+            let set_b = Set::elements(b);
+            println!("=> A = {}", set_a);
+            println!("=> B = {}", set_b);
+            println!("=> {}", cartesian::product(set_a, set_b))
         },
         _ => {}
     }

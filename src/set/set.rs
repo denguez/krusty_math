@@ -39,11 +39,11 @@ impl<T> Set<T> where T: Element {
 }
 
 impl<T> Set<T> where T: Element {
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.el.capacity()
     }
 
-    fn el(&self, index: usize) -> T {
+    pub fn el(&self, index: usize) -> T {
         self.el[index].clone()
     }
 
@@ -69,11 +69,11 @@ impl<T> Element for Set<T> where T: Element {
 }
 
 fn string_vec(el: &[impl Element]) -> String {
-    let mut string = el.iter().fold("[".to_string(), |acc, e| {
+    let mut string = el.iter().fold("{".to_string(), |acc, e| {
         acc + &e.to_string() + ","
     });
     string.pop();
-    string + "]"
+    string + "}"
 }
 
 impl Element for String {
