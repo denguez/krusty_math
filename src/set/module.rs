@@ -16,7 +16,7 @@ pub fn init() -> Module<Cmd> {
             Cmd::of("Number of subsets", "C(n, r)", subsets_of_len,
                 vec![uint("n"), uint("r")]
             ),
-            Cmd::of("Number of correspondances", &("F ".to_string() + &SUBSET + " P(AxB)"), correspondances, 
+            Cmd::of("Number of correspondences", &("F ".to_string() + &SUBSET + " P(AxB)"), n_correspondences, 
                 vec![str_list("A"), str_list("B")]
             ),
         ]
@@ -53,9 +53,11 @@ fn cartesian_prod(args: ArgList) {
     }
 }
 
-pub fn correspondances(args: ArgList) {
+pub fn n_correspondences(args: ArgList) {
     match args.unwrap() {
         Two(StrList(a), StrList(b)) => {
+            println!("# correspondences = |P(AxB)|");
+
             let set_a = Set::of_elements(a);
             let set_b = Set::of_elements(b);
             println!("=> A = {}", set_a);
