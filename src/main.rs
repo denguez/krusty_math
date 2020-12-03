@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 
+mod set;
 mod div;
 mod cli;
 
@@ -10,6 +11,7 @@ lazy_static! {
     static ref APP: Module<Module<Cmd>> = Module {
         name: "App",
         operations: vec![
+            set::init(),
             div::init(),
         ]
     };

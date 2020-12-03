@@ -25,6 +25,7 @@ impl ArgList {
                 ParamType::Str => values.push(input_str(&p.name)),
                 ParamType::IntList => values.push(input_vec_i64(&p.name)),
                 ParamType::UIntList => values.push(input_vec_u32(&p.name)),
+                ParamType::StrList => values.push(input_vec_str(&p.name))
             }
         }
         ArgList { vec: values }

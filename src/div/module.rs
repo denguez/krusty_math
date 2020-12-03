@@ -29,7 +29,7 @@ pub fn init() -> Module<Cmd> {
                 vec![uint_list("modulos"), int_list("rests")],
             ),
             Cmd::of("Convert to decimal", "", convert_to_decimal, 
-                vec![uint("base"), string("number")],
+                vec![uint("base"), str("number")],
             ),
             Cmd::of("Convert to base", "", convert_to_base, 
                 vec![int("number"), uint("base")],

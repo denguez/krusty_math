@@ -9,7 +9,7 @@ use InputValue::*;
 #[derive(Debug, Clone)]
 pub enum InputValue {
     Int(i64), UInt(u32), Str(String), 
-    IntList(Vec<i64>), UIntList(Vec<u32>),
+    IntList(Vec<i64>), UIntList(Vec<u32>), StrList(Vec<String>),
     Empty, Quit, Back
 }
 
@@ -23,6 +23,12 @@ pub fn input_u32(arg: &str) -> InputValue {
 
 pub fn input_str(arg: &str) -> InputValue {
     input(arg, |_, val| Str(val.to_string()))
+}
+
+pub fn input_vec_str(arg: &str) -> InputValue {
+    input(arg, |_, val| {
+        StrList(val.split(" ").map(|s| s.to_string()).collect())
+    })
 }
 
 pub fn input_vec_i64(arg: &str) -> InputValue {

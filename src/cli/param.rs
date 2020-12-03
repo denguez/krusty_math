@@ -1,6 +1,7 @@
 #[derive(Debug, Clone)]
 pub enum ParamType {
-    Int, UInt, Str, IntList, UIntList
+    Int, UInt, Str, 
+    IntList, UIntList, StrList
 }
 
 #[derive(Debug, Clone)]
@@ -31,6 +32,10 @@ pub fn uint_list(name: &str) -> Param {
     Param::from(name, ParamType::UIntList)
 }
 
-pub fn string(name: &str) -> Param {
+pub fn str(name: &str) -> Param {
     Param::from(name, ParamType::Str)
+}
+
+pub fn str_list(name: &str) -> Param {
+    Param::from(name, ParamType::StrList)
 }
